@@ -1,4 +1,6 @@
 from flask import Flask
+from database import Database
+from movie import Movie
 
 import views
 
@@ -9,6 +11,12 @@ def create_app():
 
     app.add_url_rule("/", view_func=views.home_page)
     app.add_url_rule("/movies", view_func=views.movies_page)
+    app.add_url_rule("/movies/<int:movie_key>", view_func=views.movie_page)
+
+    db = Database()
+    db.add_movie(Movie("Slaughterhouse-five", year=1972))
+    db.add_movie(Movie("The shining"))
+    app.config["db"] = db
 
     return app
 
