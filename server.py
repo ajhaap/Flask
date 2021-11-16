@@ -10,12 +10,15 @@ def create_app():
     app.config.from_object("settings")
 
     app.add_url_rule("/", view_func=views.home_page)
-    app.add_url_rule("/movies", view_func=views.movies_page)
+    app.add_url_rule(
+        "/movies", view_func=views.movies_page, methods=["GET", "POST"]
+        )
     app.add_url_rule("/movies/<int:movie_key>", view_func=views.movie_page)
+    app.add_url_rule(
+        "/new-movie", view_func=views.movie_add_page, methods=["GET", "POST"]
+        )
 
     db = Database()
-    db.add_movie(Movie("Slaughterhouse-five", year=1972))
-    db.add_movie(Movie("The shining"))
     app.config["db"] = db
 
     return app
